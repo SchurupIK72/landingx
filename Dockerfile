@@ -2,7 +2,7 @@ FROM nginx:1.27-alpine
 
 WORKDIR /usr/share/nginx/html
 
-COPY ["index.html", "styles.css", "Frame 48096189.jpg", "/usr/share/nginx/html/"]
+COPY ["index.html", "styles.css", "Frame 48096189.jpg", "QR.png", "/usr/share/nginx/html/"]
 
 EXPOSE 80
 
