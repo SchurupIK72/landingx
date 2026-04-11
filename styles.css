@@ -289,6 +289,60 @@ select {
     radial-gradient(circle at 84% 84%, rgba(66, 88, 147, 0.18), transparent 34%);
 }
 
+.section::before,
+.section::after {
+  transition:
+    opacity 0.7s ease,
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.85s ease;
+}
+
+.section::before {
+  transform: scale(0.985);
+}
+
+.section.is-active::before {
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-sections > .section > .container > *,
+  .contact-shell > * {
+    opacity: 0.26;
+    transform: translateY(34px) scale(0.985);
+    filter: blur(10px);
+    transition:
+      opacity 0.62s ease,
+      transform 0.78s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.78s ease;
+    will-change: opacity, transform, filter;
+  }
+
+  .scroll-sections > .section.is-active > .container > *,
+  .contact.section.is-active .contact-shell > * {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+
+  .hero.section > .container > .hero-copy,
+  .benefits.section > .container > .section-head,
+  .services.section > .container > .services-copy,
+  .extras.section > .container > .section-head,
+  .trust.section > .container > .section-head,
+  .contact.section .contact-card {
+    transition-delay: 0.04s;
+  }
+
+  .hero.section > .container > .hero-visual,
+  .benefits.section > .container > .benefits-grid,
+  .extras.section > .container > .extras-grid,
+  .trust.section > .container > .trust-layout,
+  .contact.section .site-footer {
+    transition-delay: 0.14s;
+  }
+}
+
 .hero {
   padding-top: 0;
   padding-bottom: 0;
