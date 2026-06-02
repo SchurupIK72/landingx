@@ -28,7 +28,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: var(--header-offset);
+  scroll-padding-top: 0;
 }
 
 body {
@@ -204,11 +204,11 @@ select {
   position: relative;
   display: flex;
   align-items: center;
-  min-height: calc(100svh - var(--header-offset));
-  padding: var(--section-space) 0;
+  min-height: 100svh;
+  padding: calc(var(--header-offset) + var(--section-space)) 0 var(--section-space);
   overflow: clip;
   isolation: isolate;
-  scroll-margin-top: var(--header-offset);
+  scroll-margin-top: 0;
   scroll-snap-align: start;
   scroll-snap-stop: always;
 }
@@ -1069,12 +1069,8 @@ blockquote {
   }
 
   .section {
-    padding: var(--section-space) 0;
-  }
-
-  .hero {
-    padding-top: 0;
-    padding-bottom: 0;
+    min-height: 100svh;
+    padding: calc(var(--header-offset) + var(--section-space)) 0 var(--section-space);
   }
 
   .hero-grid,
@@ -1105,7 +1101,8 @@ blockquote {
   }
 
   .section {
-    padding: var(--section-space) 0;
+    min-height: 100svh;
+    padding: calc(var(--header-offset) + var(--section-space)) 0 var(--section-space);
   }
 
   .scroll-sections > .section::before {
