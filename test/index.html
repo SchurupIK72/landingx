@@ -241,6 +241,56 @@
         </div>
       </section>
 
+      <section class="gallery section" id="gallery">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow" data-i18n="galleryEyebrow">Workshop photos</p>
+            <h2 data-i18n="galleryTitle">Photos of our office and repair work will appear here</h2>
+            <p data-i18n="galleryLead">
+              This section is ready for real photos of the office, repair process and completed jobs.
+            </p>
+          </div>
+
+          <div class="gallery-carousel" data-gallery-carousel aria-label="Photo carousel">
+            <button class="gallery-control gallery-control-prev" type="button" data-gallery-prev aria-label="Previous slide">
+              <span aria-hidden="true">‹</span>
+            </button>
+
+            <div class="gallery-viewport">
+              <div class="gallery-track" data-gallery-track>
+                <article class="gallery-card gallery-slide">
+                  <div class="gallery-media" aria-hidden="true">01</div>
+                  <h3 data-i18n="galleryCard1Title">Office and customer area</h3>
+                  <p data-i18n="galleryCard1Text">Add a photo of the entrance, reception desk or customer waiting area.</p>
+                </article>
+
+                <article class="gallery-card gallery-slide">
+                  <div class="gallery-media" aria-hidden="true">02</div>
+                  <h3 data-i18n="galleryCard2Title">Repair process</h3>
+                  <p data-i18n="galleryCard2Text">Use this slot for diagnostics, maintenance or device setup photos.</p>
+                </article>
+
+                <article class="gallery-card gallery-slide">
+                  <div class="gallery-media" aria-hidden="true">03</div>
+                  <h3 data-i18n="galleryCard3Title">Finished results</h3>
+                  <p data-i18n="galleryCard3Text">Show repaired laptops, PCs or successful service cases here.</p>
+                </article>
+              </div>
+            </div>
+
+            <button class="gallery-control gallery-control-next" type="button" data-gallery-next aria-label="Next slide">
+              <span aria-hidden="true">›</span>
+            </button>
+          </div>
+
+          <div class="gallery-dots" aria-label="Carousel navigation">
+            <button class="gallery-dot is-active" type="button" data-gallery-dot="0" aria-label="Go to slide 1" aria-pressed="true"></button>
+            <button class="gallery-dot" type="button" data-gallery-dot="1" aria-label="Go to slide 2" aria-pressed="false"></button>
+            <button class="gallery-dot" type="button" data-gallery-dot="2" aria-label="Go to slide 3" aria-pressed="false"></button>
+          </div>
+        </div>
+      </section>
+
       <section class="contact section" id="contact">
         <div class="container contact-shell">
           <div class="contact-card">
@@ -387,6 +437,15 @@
         trust3Text: "Helpful communication without technical confusion or unnecessary complexity.",
         trust4Title: "Modern troubleshooting for both hardware and software",
         trust4Text: "From system errors to physical issues, we look at the whole device experience.",
+        galleryEyebrow: "Workshop photos",
+        galleryTitle: "Photos of our office and repair work will appear here",
+        galleryLead: "This section is ready for real photos of the office, repair process and completed jobs.",
+        galleryCard1Title: "Office and customer area",
+        galleryCard1Text: "Add a photo of the entrance, reception desk or customer waiting area.",
+        galleryCard2Title: "Repair process",
+        galleryCard2Text: "Use this slot for diagnostics, maintenance or device setup photos.",
+        galleryCard3Title: "Finished results",
+        galleryCard3Text: "Show repaired laptops, PCs or successful service cases here.",
         quoteText: "Clear explanation, quick repair, easy communication.",
         quoteNote: "Sample customer-style feedback until verified reviews are added.",
         contactEyebrow: "Ready to fix it?",
@@ -485,6 +544,15 @@
         trust3Text: "Trao đổi dễ hiểu, không gây rối bởi quá nhiều thuật ngữ kỹ thuật.",
         trust4Title: "Chẩn đoán hiện đại cho cả phần cứng và phần mềm",
         trust4Text: "Từ lỗi hệ thống đến sự cố phần cứng, chúng tôi đánh giá tổng thể tình trạng thiết bị.",
+        galleryEyebrow: "Hình ảnh dịch vụ",
+        galleryTitle: "Ảnh văn phòng và quá trình sửa chữa sẽ xuất hiện tại đây",
+        galleryLead: "Phần này đã sẵn sàng để thêm ảnh thật về văn phòng, quá trình sửa chữa và các thiết bị đã hoàn thành.",
+        galleryCard1Title: "Văn phòng và khu vực khách hàng",
+        galleryCard1Text: "Thêm ảnh lối vào, quầy tiếp nhận hoặc khu vực chờ của khách hàng.",
+        galleryCard2Title: "Quá trình sửa chữa",
+        galleryCard2Text: "Dùng vị trí này cho ảnh chẩn đoán, bảo trì hoặc cài đặt thiết bị.",
+        galleryCard3Title: "Kết quả hoàn thiện",
+        galleryCard3Text: "Hiển thị laptop, PC đã sửa xong hoặc các ca dịch vụ thành công tại đây.",
         quoteText: "Giải thích rõ ràng, sửa chữa nhanh, giao tiếp dễ dàng.",
         quoteNote: "Nội dung mô phỏng đánh giá khách hàng cho đến khi có nhận xét xác thực.",
         contactEyebrow: "Sẵn sàng sửa chữa?",
@@ -568,6 +636,40 @@
         setLanguage(button.dataset.lang);
       });
     });
+
+    const galleryCarousel = document.querySelector("[data-gallery-carousel]");
+
+    if (galleryCarousel) {
+      const galleryTrack = galleryCarousel.querySelector("[data-gallery-track]");
+      const gallerySlides = Array.from(galleryTrack.children);
+      const galleryPrev = galleryCarousel.querySelector("[data-gallery-prev]");
+      const galleryNext = galleryCarousel.querySelector("[data-gallery-next]");
+      const galleryDots = Array.from(document.querySelectorAll("[data-gallery-dot]"));
+      let activeSlideIndex = 0;
+
+      function updateGallery(index) {
+        activeSlideIndex = (index + gallerySlides.length) % gallerySlides.length;
+        galleryTrack.style.transform = `translateX(-${activeSlideIndex * 100}%)`;
+
+        gallerySlides.forEach((slide, slideIndex) => {
+          slide.setAttribute("aria-hidden", String(slideIndex !== activeSlideIndex));
+        });
+
+        galleryDots.forEach((dot, dotIndex) => {
+          const isActive = dotIndex === activeSlideIndex;
+          dot.classList.toggle("is-active", isActive);
+          dot.setAttribute("aria-pressed", String(isActive));
+        });
+      }
+
+      galleryPrev.addEventListener("click", () => updateGallery(activeSlideIndex - 1));
+      galleryNext.addEventListener("click", () => updateGallery(activeSlideIndex + 1));
+      galleryDots.forEach((dot, dotIndex) => {
+        dot.addEventListener("click", () => updateGallery(dotIndex));
+      });
+
+      updateGallery(0);
+    }
 
     const savedLanguage = localStorage.getItem(languageStorageKey);
     const initialLanguage = savedLanguage && translations[savedLanguage] ? savedLanguage : "en";
