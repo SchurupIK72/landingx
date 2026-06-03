@@ -8,5 +8,7 @@ COPY ["Frame 48096189.jpg", "./"]
 COPY ["Group 48096177.jpg", "./"]
 COPY ["Group 48096185.jpg", "./"]
 COPY ["QR.png", "./"]
+COPY ["favicon.png", "./"]
+COPY ["web/", "./web/"]
 
 EXPOSE 80
