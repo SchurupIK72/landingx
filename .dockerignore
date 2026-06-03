@@ -1,7 +1,8 @@
 .git
-.codex
-test
-localization-tz.md
-Frame 48096178.jpg
-Group 48096177.jpg
-Group 48096185.jpg
+.gitignore
+codex.patch
+Dockerfile
+docker-compose.yml
+docker-compose.yaml
+README.md
+Thumbs.db

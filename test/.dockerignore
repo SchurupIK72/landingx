@@ -1,8 +1,0 @@
-.git
-.gitignore
-codex.patch
-Dockerfile
-docker-compose.yml
-docker-compose.yaml
-README.md
-Thumbs.db
