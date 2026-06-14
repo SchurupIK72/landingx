@@ -486,8 +486,8 @@ p {
 .brand-card {
   position: relative;
   width: min(100%, 500px);
-  padding: 18px;
   border-radius: var(--radius-xl);
+  overflow: hidden;
 }
 
 .brand-card::before {
@@ -502,16 +502,15 @@ p {
 
 .image-frame {
   overflow: hidden;
-  border-radius: 22px;
-  background: linear-gradient(135deg, rgba(1, 204, 252, 0.22), rgba(66, 88, 147, 0.22));
+  border-radius: inherit;
   aspect-ratio: 1 / 1;
-  padding: 18px;
 }
 
 .image-frame img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  display: block;
+  object-fit: cover;
   object-position: center;
 }
 
