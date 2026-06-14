@@ -35,7 +35,12 @@
           <button class="locale-button" type="button" data-lang="vi" aria-pressed="false">VI</button>
         </div>
         <a class="topbar-link" href="tel:+84389935306">+84 389 935 306</a>
-        <a class="topbar-link muted" href="mailto:info@pronetservicesvn.com" data-i18n="emailUs">Email us</a>
+        <a
+          class="topbar-link muted"
+          href="mailto:info@pronetservicesvn.com"
+          data-i18n="emailUs"
+          data-copy-email="info@pronetservicesvn.com"
+        >Email us</a>
       </div>
     </header>
 
@@ -337,14 +342,19 @@
 
               <div class="cta-row">
                 <a class="btn btn-primary" href="tel:+84389935306" data-i18n="contactCall">Call +84 389 935 306</a>
-                <a class="btn btn-secondary" href="mailto:info@pronetservicesvn.com" data-i18n="contactEmail">Email Us</a>
+                <a
+                  class="btn btn-secondary"
+                  href="mailto:info@pronetservicesvn.com"
+                  data-i18n="contactEmail"
+                  data-copy-email="info@pronetservicesvn.com"
+                >Email Us</a>
               </div>
             </div>
 
             <div class="contact-details">
               <div class="detail-card">
                 <span class="detail-label" data-i18n="detailEmail">Email</span>
-                <a href="mailto:info@pronetservicesvn.com">info@pronetservicesvn.com</a>
+                <a href="mailto:info@pronetservicesvn.com" data-copy-email="info@pronetservicesvn.com">info@pronetservicesvn.com</a>
               </div>
               <div class="detail-card">
                 <span class="detail-label" data-i18n="detailLocation">Location</span>
@@ -398,7 +408,7 @@
               <div class="footer-contact">
                 <p class="footer-heading" data-i18n="footerContactTitle">Contact</p>
                 <a class="footer-contact-link" href="tel:+84389935306">+84 389 935 306</a>
-                <a class="footer-contact-link" href="mailto:info@pronetservicesvn.com">info@pronetservicesvn.com</a>
+                <a class="footer-contact-link" href="mailto:info@pronetservicesvn.com" data-copy-email="info@pronetservicesvn.com">info@pronetservicesvn.com</a>
                 <p class="footer-copy" data-i18n="footerLocation">57 Đường A3, VCN, Nam Nha Trang, Khánh Hòa, Vietnam</p>
               </div>
             </div>
@@ -412,6 +422,8 @@
     </main>
   </div>
 
+  <div class="toast" id="copy-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
   <script>
     const translations = {
       en: {
@@ -421,6 +433,8 @@
         brandText: "Computer & Laptop Repair",
         languageSwitcher: "Language switcher",
         emailUs: "Email us",
+        emailCopied: "Email copied to clipboard.",
+        emailCopyFailed: "Couldn't copy email. Please copy it manually.",
         heroEyebrow: "Service Center in Nha Trang",
         heroTitle: "Fast Computer & Laptop Repair in Nha Trang",
         heroLead: "Slow laptop, broken PC, virus issues or software problems? PRONET SERVICES restores your device fast, clearly and without hidden costs.",
@@ -531,6 +545,8 @@
         brandText: "Sửa chữa máy tính và laptop",
         languageSwitcher: "Bộ chuyển đổi ngôn ngữ",
         emailUs: "Gửi email",
+        emailCopied: "Đã sao chép email vào bộ nhớ tạm.",
+        emailCopyFailed: "Không thể sao chép email. Hãy sao chép thủ công.",
         heroEyebrow: "Trung tâm dịch vụ tại Nha Trang",
         heroTitle: "Sửa chữa máy tính và laptop nhanh tại Nha Trang",
         heroLead: "Laptop chậm, PC hỏng, nhiễm virus hoặc lỗi phần mềm? PRONET SERVICES giúp thiết bị của bạn hoạt động trở lại nhanh, rõ ràng và không có chi phí ẩn.",
@@ -638,6 +654,9 @@
 
     const languageStorageKey = "site-language";
     const localeButtons = document.querySelectorAll(".locale-button");
+    const copyToast = document.querySelector("#copy-toast");
+    const copyEmailLinks = document.querySelectorAll("[data-copy-email]");
+    let toastTimer;
 
     function applyTranslations(lang) {
       const dictionary = translations[lang] || translations.en;
@@ -684,6 +703,60 @@
       applyTranslations(lang);
       localStorage.setItem(languageStorageKey, lang);
     }
+
+    function showToast(message, isError = false) {
+      if (!copyToast) {
+        return;
+      }
+
+      copyToast.textContent = message;
+      copyToast.classList.toggle("is-error", isError);
+      copyToast.classList.add("is-visible");
+
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => {
+        copyToast.classList.remove("is-visible");
+      }, 2200);
+    }
+
+    async function copyEmailToClipboard(email) {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(email);
+        return;
+      }
+
+      const helperInput = document.createElement("input");
+      helperInput.value = email;
+      helperInput.setAttribute("readonly", "");
+      helperInput.style.position = "absolute";
+      helperInput.style.left = "-9999px";
+      document.body.appendChild(helperInput);
+      helperInput.select();
+
+      const didCopy = document.execCommand("copy");
+      document.body.removeChild(helperInput);
+
+      if (!didCopy) {
+        throw new Error("copy_failed");
+      }
+    }
+
+    copyEmailLinks.forEach((link) => {
+      link.addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        const email = link.dataset.copyEmail;
+        const currentLang = document.documentElement.lang || "en";
+        const dictionary = translations[currentLang] || translations.en;
+
+        try {
+          await copyEmailToClipboard(email);
+          showToast(dictionary.emailCopied);
+        } catch (error) {
+          showToast(dictionary.emailCopyFailed, true);
+        }
+      });
+    });
 
     localeButtons.forEach((button) => {
       button.addEventListener("click", () => {
