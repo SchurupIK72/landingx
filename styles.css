@@ -123,8 +123,23 @@ select {
 
 .brand {
   display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-copy {
+  display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 24px rgba(1, 204, 252, 0.18));
 }
 
 .brand-kicker {
